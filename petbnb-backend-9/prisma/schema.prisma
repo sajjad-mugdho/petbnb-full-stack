@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        String    @id @default(uuid())
+  fullName  String    @map("full_name")
+  email     String    @unique
+  phone     String    @unique
+  password  String
+  imageUrl  String?   @map("image_url")
+  pet       PetType?  @default(BOTH)
+  role      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  review    Review[]
+  profile   Profile[]
+  bookings  Booking[]
+
+  @@map("users")
+}
+
+model Admins {
+  id       String  @id @default(uuid())
+  fullName String  @map("full_name")
+  email    String  @unique
+  phone    String  @unique
+  password String
+  imageUrl String? @map("image_url")
+
+  role      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Hosts {
+  id           String  @id @default(uuid())
+  fullName     String  @map("full_name")
+  email        String  @unique
+  phone        String  @unique
+  password     String
+  imageUrl     String? @map("image_url")
+  address      String
+  role         String
+  isApproved   Boolean @default(false)
+  preferredPet PetType @default(BOTH)
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  availableHosts AvailableHost[]
+
+  @@map("hosts")
+}
+
+model Services {
+  id                String             @id @default(uuid())
+  discription       String
+  price             String
+  images            String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  availableServices AvailableService[]
+  reviews           Review[]
+
+  @@map("services")
+}
+
+model TimeSlot {
+  id                String             @id @default(uuid())
+  startTime         DateTime           @map("start_time")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  availableServices AvailableService[]
+  AvailableHost     AvailableHost[]
+
+  @@map("time_slot")
+}
+
+model AvailableService {
+  id              String   @id @default(uuid())
+  availableHostId String
+  serviceId       String
+  services        Services @relation(fields: [serviceId], references: [id])
+
+  slotId         String          @map("slot_id")
+  timeSlot       TimeSlot        @relation(fields: [slotId], references: [id])
+  availableSeat  String          @map("available_seat")
+  isBooked       Boolean
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  availableHosts AvailableHost[]
+  bookings       Booking[]
+
+  @@map("available_services")
+}
+
+model AvailableHost {
+  id                 String           @id @default(uuid())
+  hostId             String
+  hosts              Hosts            @relation(fields: [hostId], references: [id])
+  availableSeat      String           @map("available_seat")
+  availableServiceId String
+  availableService   AvailableService @relation(fields: [availableServiceId], references: [id])
+  avilableDate       DateTime
+  slotId             String           @map("slot_id")
+  timeSlot           TimeSlot         @relation(fields: [slotId], references: [id])
+  reviews            Review[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@map("available_hosts")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  serviceId String
+  rating    String
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users           Users          @relation(fields: [userId], references: [id])
+  services        Services       @relation(fields: [serviceId], references: [id])
+  AvailableHost   AvailableHost? @relation(fields: [availableHostId], references: [id])
+  availableHostId String?
+
+  @@map("reviews")
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String
+  users     Users    @relation(fields: [userId], references: [id])
+  fullName  String   @map("full_name")
+  email     String   @unique
+  phone     String   @unique
+  password  String
+  gender    String
+  address   String
+  imageUrl  String?  @map("image_url")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  messages  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notifications")
+}
+
+model Booking {
+  id                 String           @id @default(uuid())
+  availableServiceId String
+  availableService   AvailableService @relation(fields: [availableServiceId], references: [id])
+  userId             String
+  users              Users            @relation(fields: [userId], references: [id])
+  status             PaymentStatus    @default(PENDING)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  payments  Payment[]
+
+  @@map("booking")
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  bookedId      String
+  booking       Booking       @relation(fields: [bookedId], references: [id])
+  amount        String
+  paymentDate   DateTime
+  paymentStatus PaymentStatus
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("payments")
+}
+
+enum PetType {
+  CAT
+  DOG
+  BOTH
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLITED
+}
