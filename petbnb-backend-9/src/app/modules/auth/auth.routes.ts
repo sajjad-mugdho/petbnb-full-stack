@@ -9,4 +9,4 @@ router.post('/signup-host', AuthController.createHost);
 router.post('/login-host', AuthController.loginHost);
 router.post('/refresh-token', AuthController.refreshToken);
 
-export const UsersRoute = router;
+export const AuthRoute = router;
