@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\next-level\\petbnb-booking-management-system-9.2\\petbnb-backend-9\\logs\\winston\\successes\\.ed818a3cc305c24339b645bfede0de9e982285ec-audit.json",
+    "files": [
+        {
+            "date": 1698840087403,
+            "name": "C:\\next-level\\petbnb-booking-management-system-9.2\\petbnb-backend-9\\logs\\winston\\successes\\phu-2023-01-11-18-success.log",
+            "hash": "6e735616b37bef9201474b164c9e9ca6a71e01ee54251f7916a14c52e79e6460"
+        },
+        {
+            "date": 1698843930925,
+            "name": "C:\\next-level\\petbnb-booking-management-system-9.2\\petbnb-backend-9\\logs\\winston\\successes\\phu-2023-01-11-19-success.log",
+            "hash": "c3fe84877981e3f7a788bb1835f5f3459975dd7e3ea17d0b8bcecfbed7690541"
+        }
+    ],
+    "hashType": "sha256"
+}
