@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Users } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { prisma } from '../../../shared/prisma';
@@ -62,6 +62,43 @@ const getUsers = async (
   };
 };
 
+const getUserById = async (id: string): Promise<Users | null> => {
+  const result = await prisma.users.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
+const updateUser = async (
+  id: string,
+  payload: Partial<Users>
+): Promise<Users> => {
+  const result = await prisma.users.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
+const deleteUser = async (id: string): Promise<Users | null> => {
+  const result = await prisma.users.delete({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
 export const UserService = {
   getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
 };
