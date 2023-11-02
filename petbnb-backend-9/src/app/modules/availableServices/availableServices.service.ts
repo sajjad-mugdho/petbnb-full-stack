@@ -1,5 +1,11 @@
-import { AvailableService } from '@prisma/client';
+import { AvailableService, Prisma } from '@prisma/client';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { IPaginationOptions } from '../../../interfaces/pagination';
 import { prisma } from '../../../shared/prisma';
+import {
+  AvailableSercicesSearchableFields,
+  IAvailableServiceFiltersRequest,
+} from './availableServices.constant';
 
 const insertIntoDB = async (
   data: AvailableService
@@ -11,9 +17,62 @@ const insertIntoDB = async (
   return result;
 };
 
-const getAllAvailableServices = async (): Promise<AvailableService[]> => {
-  const result = await prisma.availableService.findMany();
-  return result;
+const getAllAvailableServices = async (
+  filters: IAvailableServiceFiltersRequest,
+  options: IPaginationOptions
+) => {
+  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
+  const { searchTerm, ...filterData } = filters;
+
+  const andConditions = [];
+
+  if (searchTerm) {
+    andConditions.push({
+      OR: AvailableSercicesSearchableFields.map(field => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filterData).length) {
+    andConditions.push({
+      AND: Object.entries(filterData).map(([field, value]) => ({
+        [field]: {
+          equals: value,
+        },
+      })),
+    });
+  }
+
+  const whereConditions: Prisma.AvailableServiceWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const result = await prisma.availableService.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            createdAt: 'desc',
+          },
+  });
+  const total = await prisma.availableService.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  };
 };
 
 const getAvailableService = async (

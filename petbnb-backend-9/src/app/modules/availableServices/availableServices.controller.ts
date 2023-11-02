@@ -2,7 +2,9 @@ import { AvailableService } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import { AvailableSercicesFilterableFields } from './availableServices.constant';
 import { AvailableService_Service } from './availableServices.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
@@ -18,9 +20,14 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 
 const getAllAvailableServices = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await AvailableService_Service.getAllAvailableServices();
+    const filters = pick(req.query, AvailableSercicesFilterableFields);
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = await AvailableService_Service.getAllAvailableServices(
+      filters,
+      options
+    );
 
-    sendResponse<AvailableService[]>(res, {
+    sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'All Avialable Service Retrived',

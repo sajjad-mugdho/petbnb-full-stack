@@ -44,6 +44,11 @@
             "date": 1698956575226,
             "name": "C:\\next-level\\petbnb-booking-management-system-9.2\\petbnb-backend-9\\logs\\winston\\successes\\phu-2023-03-11-02-success.log",
             "hash": "a1e467f8bb575a88625178bf1ae01ce0694d10845b0f50230d4231e31f64e3dc"
+        },
+        {
+            "date": 1698959442374,
+            "name": "C:\\next-level\\petbnb-booking-management-system-9.2\\petbnb-backend-9\\logs\\winston\\successes\\phu-2023-03-11-03-success.log",
+            "hash": "ac029fa57b97655b038972c8535d3faaa58a5188ca5de7f4374dbc5750468655"
         }
     ],
     "hashType": "sha256"

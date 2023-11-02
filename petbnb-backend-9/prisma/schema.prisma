@@ -96,7 +96,8 @@ model AvailableService {
   slotId          String        @map("slot_id")
   timeSlot        TimeSlot      @relation(fields: [slotId], references: [id])
   availableSeat   String        @map("available_seat")
-  isBooked        Boolean
+  city            String
+  isBooked        Boolean       @default(false)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
