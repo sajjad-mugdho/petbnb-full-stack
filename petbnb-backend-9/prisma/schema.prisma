@@ -88,36 +88,35 @@ model TimeSlot {
 }
 
 model AvailableService {
-  id              String   @id @default(uuid())
+  id              String        @id @default(uuid())
   availableHostId String
+  availableHost   AvailableHost @relation(fields: [availableHostId], references: [id])
   serviceId       String
-  services        Services @relation(fields: [serviceId], references: [id])
+  services        Services      @relation(fields: [serviceId], references: [id])
+  slotId          String        @map("slot_id")
+  timeSlot        TimeSlot      @relation(fields: [slotId], references: [id])
+  availableSeat   String        @map("available_seat")
+  isBooked        Boolean
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
-  slotId         String          @map("slot_id")
-  timeSlot       TimeSlot        @relation(fields: [slotId], references: [id])
-  availableSeat  String          @map("available_seat")
-  isBooked       Boolean
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  availableHosts AvailableHost[]
-  bookings       Booking[]
+  bookings Booking[]
 
   @@map("available_services")
 }
 
 model AvailableHost {
-  id                 String           @id @default(uuid())
-  hostId             String
-  hosts              Hosts            @relation(fields: [hostId], references: [id])
-  availableSeat      String           @map("available_seat")
-  availableServiceId String
-  availableService   AvailableService @relation(fields: [availableServiceId], references: [id])
-  avilableDate       DateTime
-  slotId             String           @map("slot_id")
-  timeSlot           TimeSlot         @relation(fields: [slotId], references: [id])
-  reviews            Review[]
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
+  id               String             @id @default(uuid())
+  hostId           String
+  hosts            Hosts              @relation(fields: [hostId], references: [id])
+  availableSeat    String             @map("available_seat")
+  avilableDate     DateTime
+  slotId           String             @map("slot_id")
+  timeSlot         TimeSlot           @relation(fields: [slotId], references: [id])
+  reviews          Review[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  AvailableService AvailableService[]
 
   @@map("available_hosts")
 }
