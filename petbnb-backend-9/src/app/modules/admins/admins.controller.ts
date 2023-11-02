@@ -1,6 +1,7 @@
 import { Admins } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import config from '../../../config';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { AdminService } from './admins.service';
@@ -8,11 +9,34 @@ import { AdminService } from './admins.service';
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const result = await AdminService.createAdmin(req.body);
 
-  sendResponse<Admins>(res, {
+  // eslint-disable-next-line no-unused-vars
+  const { password, ...data } = result;
+  sendResponse<Partial<Admins>>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Admin Created Sucssesfully',
-    data: result,
+    data: data,
+  });
+});
+
+const loginAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { ...loginData } = req.body;
+  const result = await AdminService.loginAdmin(loginData);
+  const { refreshToken, ...others } = result;
+
+  // Refresh Token
+
+  const cookieOption = {
+    secure: config.env === 'production',
+    httpOnly: true,
+  };
+  res.cookie('refreshToken', refreshToken, cookieOption);
+
+  res.status(200).send({
+    success: true,
+    statusCode: 200,
+    message: 'Admin signin successfully!',
+    token: others.accessToken,
   });
 });
 
@@ -68,4 +92,5 @@ export const AdminController = {
   getAdminById,
   updateAdmin,
   deleteAdmin,
+  loginAdmin,
 };

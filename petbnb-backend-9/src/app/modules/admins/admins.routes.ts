@@ -11,7 +11,16 @@ router.get(
   auth(ENUM_USER_ROLE.SUPER_ADMIN),
   AdminController.getAdminById
 );
-router.post('/', auth(ENUM_USER_ROLE.SUPER_ADMIN), AdminController.createAdmin);
+router.post(
+  '/create-admin',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  AdminController.createAdmin
+);
+router.post(
+  '/signin',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  AdminController.createAdmin
+);
 router.patch(
   '/:id',
   auth(ENUM_USER_ROLE.SUPER_ADMIN),

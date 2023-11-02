@@ -11,16 +11,17 @@ datasource db {
 }
 
 model Users {
-  id        String    @id @default(uuid())
-  fullName  String    @map("full_name")
-  email     String    @unique
-  phone     String    @unique
+  id        String     @id @default(uuid())
+  fullName  String     @map("full_name")
+  email     String     @unique
+  phone     String     @unique
   password  String
-  imageUrl  String?   @map("image_url")
-  pet       PetType?  @default(BOTH)
+  imageUrl  String?    @map("image_url")
+  pet       PetType?   @default(BOTH)
+  gender    GenderType @default(NOT_SPECIFIED)
   role      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   review    Review[]
   profile   Profile[]
   bookings  Booking[]
@@ -29,32 +30,32 @@ model Users {
 }
 
 model Admins {
-  id       String  @id @default(uuid())
-  fullName String  @map("full_name")
-  email    String  @unique
-  phone    String  @unique
-  password String
-  imageUrl String? @map("image_url")
-
+  id        String      @id @default(uuid())
+  fullName  String      @map("full_name")
+  email     String      @unique
+  phone     String      @unique
+  password  String
+  imageUrl  String?     @map("image_url")
+  gender    GenderType? @default(NOT_SPECIFIED)
   role      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   @@map("admins")
 }
 
 model Hosts {
-  id           String  @id @default(uuid())
-  fullName     String  @map("full_name")
-  email        String  @unique
-  phone        String  @unique
-  password     String
-  imageUrl     String? @map("image_url")
-  address      String
-  role         String
-  isApproved   Boolean @default(false)
-  preferredPet PetType @default(BOTH)
-
+  id             String          @id @default(uuid())
+  fullName       String          @map("full_name")
+  email          String          @unique
+  phone          String          @unique
+  password       String
+  imageUrl       String?         @map("image_url")
+  address        String
+  role           String
+  isApproved     Boolean         @default(false)
+  preferredPet   PetType         @default(BOTH)
+  gender         GenderType?     @default(NOT_SPECIFIED)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   availableHosts AvailableHost[]
@@ -139,14 +140,15 @@ model Review {
 }
 
 model Profile {
-  id        String   @id @default(uuid())
-  userId    String
-  users     Users    @relation(fields: [userId], references: [id])
-  fullName  String   @map("full_name")
-  email     String   @unique
-  phone     String   @unique
-  password  String
-  gender    String
+  id       String      @id @default(uuid())
+  userId   String
+  users    Users       @relation(fields: [userId], references: [id])
+  fullName String      @map("full_name")
+  email    String      @unique
+  phone    String      @unique
+  password String
+  gender   GenderType? @default(NOT_SPECIFIED)
+
   address   String
   imageUrl  String?  @map("image_url")
   createdAt DateTime @default(now())
@@ -201,4 +203,10 @@ enum PetType {
 enum PaymentStatus {
   PENDING
   COMPLITED
+}
+
+enum GenderType {
+  MALE
+  FEMALE
+  NOT_SPECIFIED
 }

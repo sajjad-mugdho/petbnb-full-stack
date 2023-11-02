@@ -10,7 +10,8 @@ import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import { ILoginUser, IRefreshTokenResponse } from './auth.interface';
 
 const createUser = async (data: Users): Promise<Users> => {
-  const { password, fullName, email, phone, role, imageUrl, pet } = data;
+  const { password, fullName, email, phone, role, imageUrl, pet, gender } =
+    data;
 
   const hashPassword = await bcrypt.hash(password, 12);
   const result = await prisma.users.create({
@@ -21,6 +22,7 @@ const createUser = async (data: Users): Promise<Users> => {
       role,
       imageUrl,
       pet,
+      gender,
       password: hashPassword,
     },
   });
@@ -117,6 +119,7 @@ const createHost = async (data: Hosts): Promise<Hosts> => {
     imageUrl,
     preferredPet,
     address,
+    gender,
   } = data;
 
   const hashPassword = await bcrypt.hash(password, 12);
@@ -129,7 +132,7 @@ const createHost = async (data: Hosts): Promise<Hosts> => {
       imageUrl,
       preferredPet,
       address,
-
+      gender,
       password: hashPassword,
     },
   });
