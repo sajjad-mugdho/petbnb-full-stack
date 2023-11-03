@@ -52,6 +52,25 @@ const getAllAvailableServices = async (
 
   const result = await prisma.availableService.findMany({
     where: whereConditions,
+    include: {
+      availableHost: {
+        include: {
+          AvailableService: true,
+          hosts: true,
+          reviews: true,
+          timeSlots: true,
+        },
+      },
+      bookings: {
+        include: {
+          availableService: true,
+          payments: true,
+          users: true,
+        },
+      },
+      services: true,
+      timeSlots: true,
+    },
     skip,
     take: limit,
     orderBy:

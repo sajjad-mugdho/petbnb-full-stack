@@ -10,7 +10,12 @@ const createService = async (data: Services): Promise<Services> => {
 };
 
 const getServices = async (): Promise<Services[]> => {
-  const result = await prisma.services.findMany();
+  const result = await prisma.services.findMany({
+    include: {
+      availableServices: true,
+      reviews: true,
+    },
+  });
 
   return result;
 };
@@ -19,6 +24,10 @@ const getServiceById = async (id: string) => {
   const result = await prisma.services.findUnique({
     where: {
       id,
+    },
+    include: {
+      availableServices: true,
+      reviews: true,
     },
   });
 

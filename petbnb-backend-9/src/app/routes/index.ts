@@ -3,6 +3,7 @@ import { AuthRoute } from '../modules/auth/auth.routes';
 import { AvailableServiceRoute } from '../modules/availableServices/availableServices.routes';
 import { HostRoutes } from '../modules/hosts/host.route';
 import { ServicesRoutes } from '../modules/services/services.routes';
+import { timeSlotsRoutes } from '../modules/timeSlot/timeSlots.routes';
 import { UserRoutes } from '../modules/users/users.routes';
 
 const router = express.Router();
@@ -28,6 +29,10 @@ const moduleRoutes = [
   {
     path: '/Available-Services',
     routes: AvailableServiceRoute,
+  },
+  {
+    path: '/time-slots',
+    routes: timeSlotsRoutes,
   },
 ];
 
