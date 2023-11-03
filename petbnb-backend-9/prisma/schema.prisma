@@ -76,7 +76,7 @@ model Services {
   @@map("services")
 }
 
-model TimeSlot {
+model TimeSlots {
   id                String             @id @default(uuid())
   startTime         DateTime           @map("start_time")
   createdAt         DateTime           @default(now())
@@ -94,7 +94,7 @@ model AvailableService {
   serviceId       String
   services        Services      @relation(fields: [serviceId], references: [id])
   slotId          String        @map("slot_id")
-  timeSlot        TimeSlot      @relation(fields: [slotId], references: [id])
+  timeSlots       TimeSlots     @relation(fields: [slotId], references: [id])
   availableSeat   String        @map("available_seat")
   city            String
   isBooked        Boolean       @default(false)
@@ -113,7 +113,7 @@ model AvailableHost {
   availableSeat    String             @map("available_seat")
   avilableDate     DateTime
   slotId           String             @map("slot_id")
-  timeSlot         TimeSlot           @relation(fields: [slotId], references: [id])
+  timeSlots        TimeSlots          @relation(fields: [slotId], references: [id])
   reviews          Review[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
@@ -146,7 +146,6 @@ model Profile {
   fullName String      @map("full_name")
   email    String      @unique
   phone    String      @unique
-  password String
   gender   GenderType? @default(NOT_SPECIFIED)
 
   address   String
@@ -203,6 +202,7 @@ enum PetType {
 enum PaymentStatus {
   PENDING
   COMPLITED
+  REJECTED
 }
 
 enum GenderType {
