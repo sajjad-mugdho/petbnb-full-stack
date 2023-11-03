@@ -2,6 +2,7 @@ import express from 'express';
 import { AuthRoute } from '../modules/auth/auth.routes';
 import { AvailableServiceRoute } from '../modules/availableServices/availableServices.routes';
 import { HostRoutes } from '../modules/hosts/host.route';
+import { PaymentRoutes } from '../modules/payment/payment.routes';
 import { ServicesRoutes } from '../modules/services/services.routes';
 import { timeSlotsRoutes } from '../modules/timeSlot/timeSlots.routes';
 import { UserRoutes } from '../modules/users/users.routes';
@@ -33,6 +34,10 @@ const moduleRoutes = [
   {
     path: '/time-slots',
     routes: timeSlotsRoutes,
+  },
+  {
+    path: '/payment',
+    routes: PaymentRoutes,
   },
 ];
 
