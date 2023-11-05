@@ -95,7 +95,7 @@ model AvailableService {
   services        Services      @relation(fields: [serviceId], references: [id])
   slotId          String        @map("slot_id")
   timeSlots       TimeSlots     @relation(fields: [slotId], references: [id])
-  availableSeat   String        @map("available_seat")
+  availableSeat   Int           @map("available_seat")
   city            String
   isBooked        Boolean       @default(false)
   createdAt       DateTime      @default(now())
@@ -172,10 +172,10 @@ model Booking {
   userId             String
   users              Users            @relation(fields: [userId], references: [id])
   status             PaymentStatus    @default(PENDING)
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  payments  Payment[]
+  availableDate      DateTime         @map("available_date")
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  payments           Payment[]
 
   @@map("booking")
 }

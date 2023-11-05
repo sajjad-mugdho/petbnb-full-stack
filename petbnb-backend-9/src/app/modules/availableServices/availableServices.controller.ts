@@ -41,7 +41,7 @@ const getAvailableService = catchAsync(async (req: Request, res: Response) => {
     req.params.id
   );
 
-  sendResponse<AvailableService>(res, {
+  sendResponse<AvailableService | null>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: ' Avialable Service Retrived Succsessfully',
