@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Hosts } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import config from '../../../config';
@@ -21,6 +22,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
+  console.log(loginData);
   const result = await AuthServices.loginUser(loginData);
   const { refreshToken, ...others } = result;
 
@@ -41,12 +43,15 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createHost = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthServices.createUser(req.body);
+  const { ...hostData } = req.body;
+  console.log(req.body);
+
+  const result = await AuthServices.createUser(hostData);
 
   // eslint-disable-next-line no-unused-vars
   const { password, ...data } = result;
 
-  sendResponse(res, {
+  sendResponse<Partial<Hosts>>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Host Created Successfully',

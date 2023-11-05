@@ -55,7 +55,7 @@ model Hosts {
   role           String
   isApproved     Boolean         @default(false)
   preferredPet   PetType         @default(BOTH)
-  gender         GenderType?     @default(NOT_SPECIFIED)
+  gender         String
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   availableHosts AvailableHost[]
@@ -66,12 +66,11 @@ model Hosts {
 model Services {
   id                String             @id @default(uuid())
   discription       String
-  price             String
   images            String
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   availableServices AvailableService[]
-  reviews           Review[]
+  Review            Review[]
 
   @@map("services")
 }
@@ -96,6 +95,7 @@ model AvailableService {
   slotId          String        @map("slot_id")
   timeSlots       TimeSlots     @relation(fields: [slotId], references: [id])
   availableSeat   Int           @map("available_seat")
+  fees            String
   city            String
   isBooked        Boolean       @default(false)
   createdAt       DateTime      @default(now())
@@ -185,7 +185,7 @@ model Payment {
   bookedId      String
   booking       Booking       @relation(fields: [bookedId], references: [id])
   amount        String
-  paymentDate   DateTime
+  paymentDate   DateTime      @default(now()) @map("payment_date")
   paymentStatus PaymentStatus
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt

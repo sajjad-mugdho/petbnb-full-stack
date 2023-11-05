@@ -13,7 +13,7 @@ const createBooking = async (
     },
   });
 
-  if (!availableServiceId) {
+  if (!availableService) {
     throw new ApiError(
       httpStatus.NOT_FOUND,
       'Available Service is not Available'
@@ -38,7 +38,7 @@ const createBooking = async (
         id: availableServiceId,
       },
       data: {
-        availableSeat: availableService && availableService.availableSeat - 1,
+        availableSeat: availableService.availableSeat - 1,
 
         isBooked:
           availableService && availableService.availableSeat - 1 === 0
@@ -46,5 +46,23 @@ const createBooking = async (
             : false,
       },
     });
+
+    const payment = await transactionClient.payment.create({
+      data: {
+        amount: availableService?.fees,
+        paymentStatus: 'PENDING',
+        bookedId: booked.id,
+      },
+    });
+    return {
+      booked: booked,
+      payment: payment,
+    };
   });
+
+  return booking;
+};
+
+export const BookingService = {
+  createBooking,
 };
