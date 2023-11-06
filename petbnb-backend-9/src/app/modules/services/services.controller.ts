@@ -6,9 +6,9 @@ import sendResponse from '../../../shared/sendResponse';
 import { ServicesBNB } from './services.service';
 
 const createService = catchAsync(async (req: Request, res: Response) => {
-  const result = await ServicesBNB.createService(req.body);
-
-  console.log(req.body);
+  const { ...serviceData } = req.body;
+  const result = await ServicesBNB.createService(serviceData);
+  console.log(serviceData);
 
   sendResponse<Services>(res, {
     statusCode: httpStatus.OK,

@@ -5,6 +5,12 @@ import { ControllerBNB } from './services.controller';
 
 const router = express.Router();
 
+router.post(
+  '/create-service',
+  // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  ControllerBNB.createService
+);
+
 router.get(
   '/',
 
@@ -15,11 +21,6 @@ router.get(
   '/:id',
 
   ControllerBNB.getServiceById
-);
-router.post(
-  '/create-service',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
-  ControllerBNB.createService
 );
 
 router.patch(
