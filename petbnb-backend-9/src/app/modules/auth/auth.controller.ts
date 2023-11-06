@@ -10,6 +10,8 @@ import { AuthServices } from './auth.service';
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.createUser(req.body);
 
+  console.log(req.body);
+
   // eslint-disable-next-line no-unused-vars
   const { password, ...data } = result;
 
@@ -46,7 +48,7 @@ const createHost = catchAsync(async (req: Request, res: Response) => {
   const { ...hostData } = req.body;
   console.log(req.body);
 
-  const result = await AuthServices.createUser(hostData);
+  const result = await AuthServices.createHost(hostData);
 
   // eslint-disable-next-line no-unused-vars
   const { password, ...data } = result;
@@ -61,7 +63,7 @@ const createHost = catchAsync(async (req: Request, res: Response) => {
 
 const loginHost = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  const result = await AuthServices.loginUser(loginData);
+  const result = await AuthServices.loginHost(loginData);
   const { refreshToken, ...others } = result;
 
   // Refresh Token

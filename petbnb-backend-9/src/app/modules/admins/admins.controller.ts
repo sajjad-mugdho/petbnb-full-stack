@@ -21,6 +21,8 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 
 const loginAdmin = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
+
+  console.log(loginData);
   const result = await AdminService.loginAdmin(loginData);
   const { refreshToken, ...others } = result;
 

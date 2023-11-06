@@ -8,6 +8,8 @@ import { ServicesBNB } from './services.service';
 const createService = catchAsync(async (req: Request, res: Response) => {
   const result = await ServicesBNB.createService(req.body);
 
+  console.log(req.body);
+
   sendResponse<Services>(res, {
     statusCode: httpStatus.OK,
     success: true,

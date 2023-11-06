@@ -9,7 +9,7 @@ import { prisma } from '../../../shared/prisma';
 import { ILoginUser } from '../auth/auth.interface';
 
 const createAdmin = async (data: Admins): Promise<Admins> => {
-  const { password, fullName, email, imageUrl, phone, role, gender } = data;
+  const { password, fullName, email, imageUrl, phone, role } = data;
 
   const hashpassword = await bcrypt.hash(
     password,
@@ -22,7 +22,6 @@ const createAdmin = async (data: Admins): Promise<Admins> => {
       imageUrl,
       phone,
       role,
-      gender,
       password: hashpassword,
     },
   });
@@ -39,7 +38,7 @@ const loginAdmin = async (payload: ILoginUser) => {
   });
 
   if (!admin) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'User not find in database');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Admin not find in database');
   }
 
   const passwordMatch = await bcrypt.compare(password, admin.password);

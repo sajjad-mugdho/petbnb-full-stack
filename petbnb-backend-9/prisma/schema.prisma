@@ -30,16 +30,16 @@ model Users {
 }
 
 model Admins {
-  id        String      @id @default(uuid())
-  fullName  String      @map("full_name")
-  email     String      @unique
-  phone     String      @unique
+  id        String     @id @default(uuid())
+  fullName  String     @map("full_name")
+  email     String     @unique
+  phone     String     @unique
   password  String
-  imageUrl  String?     @map("image_url")
-  gender    GenderType? @default(NOT_SPECIFIED)
+  imageUrl  String?    @map("image_url")
+  gender    GenderType @default(NOT_SPECIFIED)
   role      String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
   @@map("admins")
 }
@@ -55,7 +55,7 @@ model Hosts {
   role           String
   isApproved     Boolean         @default(false)
   preferredPet   PetType         @default(BOTH)
-  gender         String
+  gender         GenderType      @default(NOT_SPECIFIED)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   availableHosts AvailableHost[]
@@ -65,12 +65,12 @@ model Hosts {
 
 model Services {
   id                String             @id @default(uuid())
-  discription       String
+  name              String
+  description       String
   images            String
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   availableServices AvailableService[]
-  Review            Review[]
 
   @@map("services")
 }
@@ -123,16 +123,16 @@ model AvailableHost {
 }
 
 model Review {
-  id        String   @id @default(uuid())
-  userId    String
-  serviceId String
+  id     String @id @default(uuid())
+  userId String
+
   rating    String
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users           Users          @relation(fields: [userId], references: [id])
-  services        Services       @relation(fields: [serviceId], references: [id])
+  users Users @relation(fields: [userId], references: [id])
+
   AvailableHost   AvailableHost? @relation(fields: [availableHostId], references: [id])
   availableHostId String?
 

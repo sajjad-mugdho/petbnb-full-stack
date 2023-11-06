@@ -119,7 +119,6 @@ const createHost = async (data: Hosts): Promise<Hosts> => {
     imageUrl,
     preferredPet,
     address,
-    gender,
   } = data;
 
   const hashPassword = await bcrypt.hash(password, 12);
@@ -132,7 +131,6 @@ const createHost = async (data: Hosts): Promise<Hosts> => {
       imageUrl,
       preferredPet,
       address,
-      gender,
       password: hashPassword,
     },
   });

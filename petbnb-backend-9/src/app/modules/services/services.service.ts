@@ -13,7 +13,6 @@ const getServices = async (): Promise<Services[]> => {
   const result = await prisma.services.findMany({
     include: {
       availableServices: true,
-      reviews: true,
     },
   });
 
@@ -27,7 +26,6 @@ const getServiceById = async (id: string) => {
     },
     include: {
       availableServices: true,
-      reviews: true,
     },
   });
 

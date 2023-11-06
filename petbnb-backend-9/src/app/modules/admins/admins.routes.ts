@@ -13,13 +13,13 @@ router.get(
 );
 router.post(
   '/create-admin',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  // auth(ENUM_USER_ROLE.SUPER_ADMIN),
   AdminController.createAdmin
 );
 router.post(
   '/signin',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN),
-  AdminController.createAdmin
+  // auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  AdminController.loginAdmin
 );
 router.patch(
   '/:id',
