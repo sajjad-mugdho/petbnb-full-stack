@@ -63,6 +63,76 @@ const createBooking = async (
   return booking;
 };
 
+const cancelBooking = async (bookingId: string) => {
+  const booked = await prisma.booking.findUnique({
+    where: {
+      id: bookingId,
+    },
+  });
+
+  if (!booked) {
+    throw new Error('Appointment does not exist');
+  }
+
+  if (booked.status === 'REJECTED') {
+    throw new Error('Appointment has already been cancelled');
+  }
+
+  if (booked.status === 'COMPLITED') {
+    throw new Error('Appointment has already been completed');
+  }
+
+  const canceledBooking = await prisma.$transaction(async transactionClient => {
+    const bookingToCancel = await transactionClient.booking.update({
+      where: {
+        id: bookingId,
+      },
+      data: {
+        status: 'REJECTED',
+      },
+    });
+
+    const availableService =
+      await transactionClient.availableService.findUnique({
+        where: {
+          id: booked.availableServiceId,
+        },
+      });
+
+    await transactionClient.availableService.update({
+      where: {
+        id: booked.availableServiceId,
+      },
+      data: {
+        availableSeat: {
+          increment: 1,
+        },
+
+        isBooked:
+          availableService && availableService.availableSeat + 1 > 0
+            ? false
+            : true,
+      },
+    });
+
+    await transactionClient.payment.update({
+      where: {
+        id: bookingId,
+      },
+      data: {
+        paymentStatus: 'REJECTED',
+      },
+    });
+
+    return {
+      appointment: bookingToCancel,
+    };
+  });
+
+  return canceledBooking;
+};
+
 export const BookingService = {
   createBooking,
+  cancelBooking,
 };
