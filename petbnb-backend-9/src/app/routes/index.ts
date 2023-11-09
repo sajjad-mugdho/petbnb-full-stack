@@ -3,6 +3,7 @@ import { AdminRoutes } from '../modules/admins/admins.routes';
 import { AuthRoute } from '../modules/auth/auth.routes';
 import { AvailableHostRoutes } from '../modules/availableHost/availableHost.routes';
 import { AvailableServiceRoute } from '../modules/availableServices/availableServices.routes';
+import { BookingRouter } from '../modules/booking/booking.routes';
 import { HostRoutes } from '../modules/hosts/host.route';
 import { PaymentRoutes } from '../modules/payment/payment.routes';
 import { ServicesRoutes } from '../modules/services/services.routes';
@@ -41,7 +42,6 @@ const moduleRoutes = [
     path: '/available-host',
     routes: AvailableHostRoutes,
   },
-
   {
     path: '/time-slots',
     routes: timeSlotsRoutes,
@@ -51,8 +51,8 @@ const moduleRoutes = [
     routes: PaymentRoutes,
   },
   {
-    path: '/booking',
-    routes: PaymentRoutes,
+    path: '/bookings',
+    routes: BookingRouter,
   },
 ];
 

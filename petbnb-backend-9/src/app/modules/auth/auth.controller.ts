@@ -10,7 +10,7 @@ import { AuthServices } from './auth.service';
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.createUser(req.body);
 
-  console.log(req.body);
+  console.log('user', req.body);
 
   // eslint-disable-next-line no-unused-vars
   const { password, ...data } = result;

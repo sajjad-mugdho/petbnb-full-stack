@@ -81,7 +81,7 @@ model TimeSlots {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   availableServices AvailableService[]
-  AvailableHost     AvailableHost[]
+  availableHosts    AvailableHost[]
 
   @@map("time_slot")
 }
@@ -114,7 +114,6 @@ model AvailableHost {
   avilableDate     DateTime
   slotId           String             @map("slot_id")
   timeSlots        TimeSlots          @relation(fields: [slotId], references: [id])
-  reviews          Review[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   AvailableService AvailableService[]
@@ -132,9 +131,6 @@ model Review {
   updatedAt DateTime @updatedAt
 
   users Users @relation(fields: [userId], references: [id])
-
-  AvailableHost   AvailableHost? @relation(fields: [availableHostId], references: [id])
-  availableHostId String?
 
   @@map("reviews")
 }

@@ -6,7 +6,6 @@ export const usersFilterableFields: string[] = [
   'fullName',
   'email',
   'phone',
-
   'gender',
 ];
 
