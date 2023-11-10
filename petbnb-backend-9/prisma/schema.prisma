@@ -122,9 +122,8 @@ model AvailableHost {
 }
 
 model Review {
-  id     String @id @default(uuid())
-  userId String
-
+  id        String   @id @default(uuid())
+  userId    String
   rating    String
   comment   String
   createdAt DateTime @default(now())
@@ -136,18 +135,17 @@ model Review {
 }
 
 model Profile {
-  id       String      @id @default(uuid())
-  userId   String
-  users    Users       @relation(fields: [userId], references: [id])
-  fullName String      @map("full_name")
-  email    String      @unique
-  phone    String      @unique
-  gender   GenderType? @default(NOT_SPECIFIED)
-
+  id        String      @id @default(uuid())
+  userId    String
+  users     Users       @relation(fields: [userId], references: [id])
+  fullName  String      @map("full_name")
+  email     String      @unique
+  phone     String      @unique
+  gender    GenderType? @default(NOT_SPECIFIED)
   address   String
-  imageUrl  String?  @map("image_url")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  imageUrl  String?     @map("image_url")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   @@map("profiles")
 }
@@ -167,7 +165,7 @@ model Booking {
   availableService   AvailableService @relation(fields: [availableServiceId], references: [id])
   userId             String
   users              Users            @relation(fields: [userId], references: [id])
-  status             PaymentStatus    @default(PENDING)
+  status             String           @default("pending")
   availableDate      DateTime         @map("available_date")
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
@@ -177,14 +175,14 @@ model Booking {
 }
 
 model Payment {
-  id            String        @id @default(uuid())
+  id            String   @id @default(uuid())
   bookedId      String
-  booking       Booking       @relation(fields: [bookedId], references: [id])
+  booking       Booking  @relation(fields: [bookedId], references: [id])
   amount        String
-  paymentDate   DateTime      @default(now()) @map("payment_date")
-  paymentStatus PaymentStatus
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  paymentDate   DateTime @default(now()) @map("payment_date")
+  paymentStatus String   @default("pending")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("payments")
 }
@@ -193,12 +191,6 @@ enum PetType {
   CAT
   DOG
   BOTH
-}
-
-enum PaymentStatus {
-  PENDING
-  COMPLITED
-  REJECTED
 }
 
 enum GenderType {

@@ -57,7 +57,6 @@ const getAllAvailableServices = async (
         include: {
           AvailableService: true,
           hosts: true,
-          reviews: true,
           timeSlots: true,
         },
       },
