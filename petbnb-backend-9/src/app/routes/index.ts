@@ -6,6 +6,7 @@ import { AvailableServiceRoute } from '../modules/availableServices/availableSer
 import { BookingRouter } from '../modules/booking/booking.routes';
 import { HostRoutes } from '../modules/hosts/host.route';
 import { PaymentRoutes } from '../modules/payment/payment.routes';
+import { ProfileRoutes } from '../modules/profile/profile.routes';
 import { ServicesRoutes } from '../modules/services/services.routes';
 import { timeSlotsRoutes } from '../modules/timeSlot/timeSlots.routes';
 import { UserRoutes } from '../modules/users/users.routes';
@@ -33,6 +34,10 @@ const moduleRoutes = [
   {
     path: '/services',
     routes: ServicesRoutes,
+  },
+  {
+    path: '/profile',
+    routes: ProfileRoutes,
   },
   {
     path: '/available-services',
