@@ -10,7 +10,7 @@ export const BookingFilterableFields: string[] = [
 ];
 
 export const BookingSearchableFields: string[] = [
-  'fullName',
+  'payment',
   'availableSeat',
   'services',
   'isBooked',
